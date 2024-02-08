@@ -43,8 +43,22 @@ function DateCounter() {
     let month = currentDate.getMonth() + 1; // Month is 0-indexed
     let year = currentDate.getFullYear();
 
+    // Create an array with the names of the days of the week
+    const daysOfWeek = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+    ];
+
+    // Get the day of the week from the date object
+    let dayOfWeek = daysOfWeek[currentDate.getDay()];
+
     // Create a string with the date in the format "day/month/year"
-    let dateString = `${day}/${month}/${year}`;
+    let dateString = `${dayOfWeek}, ${day}/${month}/${year}`;
 
     return (
         <div
@@ -66,7 +80,9 @@ function DateCounter() {
                 <button onClick={countIncreaseHandler}> Increase </button>
             </div>
             <p>
-                {count} days from today is {dateString}
+                {count >= 0
+                    ? `${count} days from today is ${dateString}.`
+                    : `${Math.abs(count)} days ago was ${dateString}.`}
             </p>
         </div>
     );
