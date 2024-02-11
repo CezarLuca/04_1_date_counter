@@ -9,22 +9,41 @@ export default function App() {
 }
 
 function DateCounter() {
-    const [count, setCount] = useState("");
+    // const [date, setDate] = useState(new Date());
+    const [count, setCount] = useState(0);
     const [step, setStep] = useState(1);
 
+    const stepIncreaseHandler = () => {
+        setStep(step + 1);
+    };
+
+    const stepDecreaseHandler = () => {
+        step > 1 ? setStep(step - 1) : setStep(1);
+    };
+
     const countIncreaseHandler = () => {
-        count === "" ? setCount(step) : setCount(count + step);
+        setCount(count + step);
     };
+
     const countDecreaseHandler = () => {
-        count === "" ? setCount(-step) : setCount(count - step);
+        setCount(count - step);
     };
+
+    // Create a new date object for the current date
     let currentDate = new Date();
 
+    // Add the count to the current date
     currentDate.setDate(currentDate.getDate() + count);
 
+    // Format the date to a string
+    // let dateString = currentDate.toDateString();
+
+    // Get the day, month, and year from the date object
     let day = currentDate.getDate();
     let month = currentDate.getMonth() + 1; // Month is 0-indexed
     let year = currentDate.getFullYear();
+
+    // Create an array with the names of the days of the week
     const daysOfWeek = [
         "Sunday",
         "Monday",
@@ -34,18 +53,12 @@ function DateCounter() {
         "Friday",
         "Saturday",
     ];
-    let dayOfWeek = daysOfWeek[currentDate.getDay()];
-    let dateString = `${dayOfWeek}, ${day}/${month}/${year}`;
 
-    function getMessage() {
-        if (count === "") {
-            return "Welcome to the date calculator. Please set your desired date above.";
-        } else if (count >= 0) {
-            return `${count} days from today is ${dateString}.`;
-        } else {
-            return `${Math.abs(count)} days ago was ${dateString}.`;
-        }
-    }
+    // Get the day of the week from the date object
+    let dayOfWeek = daysOfWeek[currentDate.getDay()];
+
+    // Create a string with the date in the format "day/month/year"
+    let dateString = `${dayOfWeek}, ${day}/${month}/${year}`;
 
     return (
         <div
@@ -57,30 +70,20 @@ function DateCounter() {
             }}
         >
             <div>
-                <input
-                    type="range"
-                    min="1"
-                    max="10"
-                    value={step}
-                    onChange={(e) => setStep(Number(e.target.value))}
-                />
+                <button onClick={stepDecreaseHandler}>Decrease Step</button>
                 Step: {step}
+                <button onClick={stepIncreaseHandler}> Increase Step </button>
             </div>
             <div>
                 <button onClick={countDecreaseHandler}> Decrease </button>
-                <input
-                    type="text"
-                    placeholder="Enter a number of days:"
-                    value={count}
-                    onChange={(e) =>
-                        setCount(
-                            e.target.value === "" ? "" : Number(e.target.value)
-                        )
-                    }
-                />
+                Count: {count}
                 <button onClick={countIncreaseHandler}> Increase </button>
             </div>
-            <p>{getMessage()}</p>
+            <p>
+                {count >= 0
+                    ? `${count} days from today is ${dateString}.`
+                    : `${Math.abs(count)} days ago was ${dateString}.`}
+            </p>
         </div>
     );
 }
