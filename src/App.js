@@ -39,8 +39,10 @@ function DateCounter() {
 
     function getMessage() {
         if (count === "") {
-            return "Welcome to the date calculator. Please set your desired date above.";
-        } else if (count >= 0) {
+            return `Welcome to the date calculator. Today is ${dateString}.`;
+        } else if (count === 0) {
+            return `Today is ${dateString}.`;
+        } else if (count > 0) {
             return `${count} days from today is ${dateString}.`;
         } else {
             return `${Math.abs(count)} days ago was ${dateString}.`;
@@ -81,6 +83,18 @@ function DateCounter() {
                 <button onClick={countIncreaseHandler}> Increase </button>
             </div>
             <p>{getMessage()}</p>
+            {count !== "" || step !== 1 ? (
+                <div>
+                    <button
+                        onClick={() => {
+                            setCount("");
+                            setStep(1);
+                        }}
+                    >
+                        Reset
+                    </button>
+                </div>
+            ) : null}
         </div>
     );
 }
